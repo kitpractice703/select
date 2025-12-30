@@ -16,8 +16,10 @@ const Navbar = styled.nav`
   justify-content: space-between;
   align-items: center;
   padding: 20px 50px;
-  max-width: 1200px;
-  margin: 0 auto;
+  width: 100%; /* ✅ 변경: 가로 꽉 채우기 */
+  box-sizing: border-box; /* ✅ 추가: 패딩 포함해서 크기 계산 */
+  /* max-width: 1200px;  <-- ❌ 삭제: 너비 제한 제거 */
+  /* margin: 0 auto;     <-- ❌ 삭제: 이미 꽉 차서 중앙 정렬 필요 없음 */
 `;
 
 const Logo = styled.div`
@@ -43,12 +45,22 @@ const Hero = styled.header`
 
 const GridContainer = styled.div`
   display: grid;
+  /* 기본 3열 유지하되... */
   grid-template-columns: repeat(3, 1fr);
   gap: 40px;
-  padding: 0 20px;
-  max-width: 1000px;
-  margin: 0 auto;
+  padding: 0 40px; /* 좌우 여백을 조금 더 줌 */
 
+  /* ✅ 변경: 최대 너비를 1000px -> 1600px로 대폭 증가 */
+  max-width: 1600px;
+  width: 100%; /* 화면이 작을 땐 꽉 차게 */
+  margin: 0 auto; /* 중앙 정렬 */
+
+  /* 🔥 [추가] 초대형 화면(1600px 이상)에서는 4줄로 보여주기 */
+  @media (min-width: 1600px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  /* 기존 반응형 유지 */
   @media (max-width: 1024px) {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -145,7 +157,7 @@ const Main = () => {
     alert("로그아웃 되었습니다.");
     navigate("/login"); // 로그인 페이지로 이동
   };
-  
+
   // PDF 기반 데이터
   const moods: MoodData[] = [
     {
@@ -197,16 +209,18 @@ const Main = () => {
       <Navbar>
         <div style={{ width: 50 }}></div>
         <Logo>Select.</Logo>
-  
-      {/* username이 있으면 로그아웃, 없으면 로그인 버튼 보여주기 */}
-      {username ? (
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <span style={{ fontSize: '14px', color: '#666' }}>{username}님</span>
-          <LogoutBtn onClick={handleLogout}>Logout</LogoutBtn>
-        </div>
-  ) : (
-    <LogoutBtn onClick={() => navigate("/login")}>Login</LogoutBtn>
-  )}
+
+        {/* username이 있으면 로그아웃, 없으면 로그인 버튼 보여주기 */}
+        {username ? (
+          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <span style={{ fontSize: "14px", color: "#666" }}>
+              {username}님
+            </span>
+            <LogoutBtn onClick={handleLogout}>Logout</LogoutBtn>
+          </div>
+        ) : (
+          <LogoutBtn onClick={() => navigate("/login")}>Login</LogoutBtn>
+        )}
       </Navbar>
 
       <Hero>

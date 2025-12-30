@@ -12,7 +12,7 @@ const Container = styled.div`
 `;
 
 const ImageSection = styled.div`
-  flex: 1;
+  flex: 1.2;
   background: linear-gradient(to right, #e0c3fc, #8ec5fc);
   display: flex;
   align-items: center;
@@ -21,13 +21,17 @@ const ImageSection = styled.div`
   color: white;
   h2 {
     font-family: "Playfair Display";
-    font-size: 3rem;
+    font-size: 4rem; /* 3rem -> 4rem */
     margin-bottom: 20px;
+    font-weight: 700;
   }
   p {
-    font-size: 1.2rem;
+    font-size: 1.5rem; /* 1.2rem -> 1.5rem */
+    opacity: 0.9;
   }
-  @media (max-width: 768px) {
+
+  /* 태블릿 이하에서는 이미지 섹션 숨기기 (선택사항) */
+  @media (max-width: 900px) {
     display: none;
   }
 `;
@@ -38,46 +42,91 @@ const FormSection = styled.div`
   justify-content: center;
   align-items: center;
   background-color: #f9f9f9;
+  padding: 40px; /* 화면이 작아질 때 여백 확보 */
 `;
 
 const FormBox = styled.div`
-  width: 400px;
-  padding: 50px;
+  width: 100%;
+  max-width: 550px;
+  padding: 60px 50px;
   background: white;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
   text-align: center;
+
+  /* 🔥 [핵심 변경] 대형 모니터(1440px 이상)에서는 박스 자체를 1.2배 키움 */
+  @media (min-width: 1440px) {
+    max-width: 700px; /* 폭을 700px까지 허용 */
+    padding: 80px 60px; /* 내부 여백도 펑펑 씀 */
+  }
+
+  /* 모바일 대응 */
+  @media (max-width: 480px) {
+    padding: 40px 20px;
+    box-shadow: none;
+    background: transparent;
+  }
 `;
 
 const Input = styled.input`
   width: 100%;
-  padding: 15px;
-  margin-bottom: 15px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  font-size: 14px;
+  padding: 18px 20px;
+  margin-bottom: 20px;
+  border: 1px solid #e1e1e1;
+  border-radius: 8px;
+  font-size: 16px;
+  background-color: #fcfcfc;
   box-sizing: border-box;
+  transition: all 0.2s;
+
+  &:focus {
+    border-color: #8ec5fc;
+    outline: none;
+    background-color: #fff;
+    box-shadow: 0 0 0 4px rgba(142, 197, 252, 0.1);
+  }
+
+  /* 🔥 [핵심 변경] 대형 모니터에서는 글씨와 입력창 높이를 더 시원하게 */
+  @media (min-width: 1440px) {
+    padding: 22px 25px; /* 입력창 높이 증가 */
+    font-size: 18px; /* 글씨 크기 증가 */
+    margin-bottom: 30px; /* 간격 증가 */
+  }
 `;
 
 const Button = styled.button`
   width: 100%;
-  padding: 15px;
+  padding: 18px;
   background-color: #1d1d1d;
   color: white;
   border: none;
+  border-radius: 8px;
   cursor: pointer;
-  font-size: 16px;
-  margin-top: 10px;
+  font-size: 18px;
+  font-weight: 600;
+  margin-top: 15px;
   transition: 0.3s;
+
   &:hover {
     background-color: #333;
+    transform: translateY(-2px);
+  }
+
+  /* 🔥 [핵심 변경] 대형 모니터 버튼 크기 증가 */
+  @media (min-width: 1440px) {
+    padding: 22px;
+    font-size: 20px;
+    margin-top: 25px;
   }
 `;
 
 const LinkText = styled.p`
-  margin-top: 20px;
-  color: #666;
-  font-size: 14px;
+  margin-top: 25px;
+  color: #888;
+  font-size: 15px;
   cursor: pointer;
+  transition: color 0.2s;
+
   &:hover {
     text-decoration: underline;
     color: #1d1d1d;
