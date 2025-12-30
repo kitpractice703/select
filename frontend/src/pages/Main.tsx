@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import MoodCard, { type MoodData } from "../components/MoodCard"; // 위에서 만든 컴포넌트 임포트
@@ -127,7 +127,25 @@ const CloseBtn = styled.button`
 const Main = () => {
   const navigate = useNavigate();
   const [selectedMood, setSelectedMood] = useState<MoodData | null>(null);
+  // 1. 로그인 상태를 저장할 변수 만들기
+  const [username, setUsername] = useState<string | null>(null);
 
+  // 2. 화면이 켜질 때 딱 한번 실행되는 검사원
+  useEffect(() => {
+    const storedUser = localStorage.getItem("username"); // 저장소 확인
+    if (storedUser) {
+      setUsername(storedUser); // 이름이 있으면 "로그인 됨"으로 설정
+    }
+  }, []);
+
+  // 3. 로그아웃 버튼을 눌렀을 때 실행할 함수
+  const handleLogout = () => {
+    localStorage.removeItem("username"); // 저장소에서 이름 지우기 (핵심!)
+    setUsername(null); // 화면 상태 초기화
+    alert("로그아웃 되었습니다.");
+    navigate("/login"); // 로그인 페이지로 이동
+  };
+  
   // PDF 기반 데이터
   const moods: MoodData[] = [
     {
@@ -169,7 +187,7 @@ const Main = () => {
       id: "06",
       title: "Street",
       sub: "자유로운 스트릿",
-      img: "https://images.unsplash.com/photo-1550949987-0b171092523d?q=80&w=800&auto=format&fit=crop",
+      img: "https://plus.unsplash.com/premium_photo-1710064217185-8351ee74d564?q=80&w=1477&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       desc: "틀에 박히지 않은 자유로움과 힙한 에너지를 표현합니다.",
     },
   ];
@@ -179,7 +197,16 @@ const Main = () => {
       <Navbar>
         <div style={{ width: 50 }}></div>
         <Logo>Select.</Logo>
-        <LogoutBtn onClick={() => navigate("/login")}>Logout</LogoutBtn>
+  
+      {/* username이 있으면 로그아웃, 없으면 로그인 버튼 보여주기 */}
+      {username ? (
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <span style={{ fontSize: '14px', color: '#666' }}>{username}님</span>
+          <LogoutBtn onClick={handleLogout}>Logout</LogoutBtn>
+        </div>
+  ) : (
+    <LogoutBtn onClick={() => navigate("/login")}>Login</LogoutBtn>
+  )}
       </Navbar>
 
       <Hero>

@@ -89,9 +89,10 @@ const Login = () => {
   const handleSubmit = async () => {
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/signin/",
+        "http://100.49.50.236/api/signin/",
         formData
       );
+      localStorage.setItem("username", response.data.username);
       alert(`${response.data.username}님 환영합니다!`);
       navigate("/"); // 로그인 성공 시 메인 화면으로 이동
     } catch (error: any) {
