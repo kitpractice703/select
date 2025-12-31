@@ -46,24 +46,24 @@ const Hero = styled.header`
 const GridContainer = styled.div`
   display: grid;
   width: 100%;
-  max-width: none; /* 🔥 핵심: 너비 제한 해제 (무한대) */
-  padding: 0 50px; /* Navbar와 라인을 맞추기 위한 여백 */
+  max-width: none;
+  padding: 0 50px;
   box-sizing: border-box;
   gap: 40px;
   margin: 0 auto;
 
-  /* 💻 데스크탑 (1024px 이상): 한 줄에 4개씩 꽉 채우기 */
-  grid-template-columns: repeat(4, 1fr);
+  /* 🔥 [핵심 수정] 화면이 아무리 커져도 '3개'씩만 배열해서 3개/3개 균형 맞추기 */
+  grid-template-columns: repeat(3, 1fr);
 
-  /* 📱 태블릿 (화면 줄어들면): 한 줄에 2개 */
+  /* 💻 반응형: 화면이 좁아지면(태블릿) 2개씩 */
   @media (max-width: 1024px) {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  /* 📱 모바일: 한 줄에 1개 */
+  /* 📱 반응형: 모바일은 1개씩 */
   @media (max-width: 768px) {
     grid-template-columns: repeat(1, 1fr);
-    padding: 0 20px; /* 모바일에서는 여백 줄임 */
+    padding: 0 20px;
   }
 `;
 
