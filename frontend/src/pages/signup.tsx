@@ -19,18 +19,19 @@ const ImageSection = styled.div`
   justify-content: center;
   flex-direction: column;
   color: white;
+
+  /* [왼쪽 텍스트 크기 수정] 로그인 화면과 동일하게 맞춤 */
   h2 {
     font-family: "Playfair Display";
-    font-size: 4rem; /* 3rem -> 4rem */
+    font-size: 3rem; /* 4rem -> 3rem (축소) */
     margin-bottom: 20px;
     font-weight: 700;
   }
   p {
-    font-size: 1.5rem; /* 1.2rem -> 1.5rem */
+    font-size: 1.5rem; /* 적당한 크기 유지 */
     opacity: 0.9;
   }
 
-  /* 태블릿 이하에서는 이미지 섹션 숨기기 (선택사항) */
   @media (max-width: 900px) {
     display: none;
   }
@@ -42,25 +43,18 @@ const FormSection = styled.div`
   justify-content: center;
   align-items: center;
   background-color: #f9f9f9;
-  padding: 40px; /* 화면이 작아질 때 여백 확보 */
+  padding: 40px;
 `;
 
 const FormBox = styled.div`
   width: 100%;
-  max-width: 550px;
-  padding: 60px 50px;
+  max-width: 420px; /* 로그인 박스와 동일한 너비 */
+  padding: 50px 40px;
   background: white;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
   border-radius: 12px;
   text-align: center;
 
-  /* 🔥 [핵심 변경] 대형 모니터(1440px 이상)에서는 박스 자체를 1.2배 키움 */
-  @media (min-width: 1440px) {
-    max-width: 700px; /* 폭을 700px까지 허용 */
-    padding: 80px 60px; /* 내부 여백도 펑펑 씀 */
-  }
-
-  /* 모바일 대응 */
   @media (max-width: 480px) {
     padding: 40px 20px;
     box-shadow: none;
@@ -70,11 +64,11 @@ const FormBox = styled.div`
 
 const Input = styled.input`
   width: 100%;
-  padding: 18px 20px;
-  margin-bottom: 20px;
-  border: 1px solid #e1e1e1;
+  padding: 15px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
   border-radius: 8px;
-  font-size: 16px;
+  font-size: 15px;
   background-color: #fcfcfc;
   box-sizing: border-box;
   transition: all 0.2s;
@@ -83,47 +77,33 @@ const Input = styled.input`
     border-color: #8ec5fc;
     outline: none;
     background-color: #fff;
-    box-shadow: 0 0 0 4px rgba(142, 197, 252, 0.1);
-  }
-
-  /* 🔥 [핵심 변경] 대형 모니터에서는 글씨와 입력창 높이를 더 시원하게 */
-  @media (min-width: 1440px) {
-    padding: 22px 25px; /* 입력창 높이 증가 */
-    font-size: 18px; /* 글씨 크기 증가 */
-    margin-bottom: 30px; /* 간격 증가 */
+    box-shadow: 0 0 0 3px rgba(142, 197, 252, 0.1);
   }
 `;
 
 const Button = styled.button`
   width: 100%;
-  padding: 18px;
+  padding: 15px;
   background-color: #1d1d1d;
   color: white;
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 600;
-  margin-top: 15px;
+  margin-top: 10px;
   transition: 0.3s;
 
   &:hover {
     background-color: #333;
     transform: translateY(-2px);
   }
-
-  /* 🔥 [핵심 변경] 대형 모니터 버튼 크기 증가 */
-  @media (min-width: 1440px) {
-    padding: 22px;
-    font-size: 20px;
-    margin-top: 25px;
-  }
 `;
 
 const LinkText = styled.p`
-  margin-top: 25px;
+  margin-top: 20px;
   color: #888;
-  font-size: 15px;
+  font-size: 14px;
   cursor: pointer;
   transition: color 0.2s;
 
@@ -135,7 +115,7 @@ const LinkText = styled.p`
 
 // --- 컴포넌트 로직 ---
 const Signup = () => {
-  const navigate = useNavigate(); // 페이지 이동 훅
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -148,9 +128,9 @@ const Signup = () => {
 
   const handleSubmit = async () => {
     try {
-      await axios.post("http://100.49.50.236/api/signup/", formData);
+      await axios.post("/api/signup/", formData);
       alert("회원가입 성공! 로그인 페이지로 이동합니다.");
-      navigate("/login"); // 성공 시 로그인 페이지로 이동
+      navigate("/login");
     } catch (error: any) {
       alert("회원가입 실패: " + (error.response?.data?.message || "오류 발생"));
     }
@@ -164,6 +144,7 @@ const Signup = () => {
       </ImageSection>
       <FormSection>
         <FormBox>
+          {/* [오른쪽 제목 크기 수정] 2.5rem -> 2rem (로그인 제목 크기) */}
           <h2 style={{ fontFamily: "Playfair Display", marginBottom: "30px" }}>
             Sign Up
           </h2>

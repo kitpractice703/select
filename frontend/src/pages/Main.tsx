@@ -15,11 +15,11 @@ const Navbar = styled.nav`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  /* 핵심: 최대 너비 제한을 없앱니다 */
+  width: 100%;
+  /* 양옆 여백만 조금 줍니다 (딱 붙으면 안 예쁘니까요) */
   padding: 20px 50px;
-  width: 100%; /* ✅ 변경: 가로 꽉 채우기 */
-  box-sizing: border-box; /* ✅ 추가: 패딩 포함해서 크기 계산 */
-  /* max-width: 1200px;  <-- ❌ 삭제: 너비 제한 제거 */
-  /* margin: 0 auto;     <-- ❌ 삭제: 이미 꽉 차서 중앙 정렬 필요 없음 */
+  box-sizing: border-box;
 `;
 
 const Logo = styled.div`
@@ -45,27 +45,25 @@ const Hero = styled.header`
 
 const GridContainer = styled.div`
   display: grid;
-  /* 기본 3열 유지하되... */
-  grid-template-columns: repeat(3, 1fr);
+  width: 100%;
+  max-width: none; /* 🔥 핵심: 너비 제한 해제 (무한대) */
+  padding: 0 50px; /* Navbar와 라인을 맞추기 위한 여백 */
+  box-sizing: border-box;
   gap: 40px;
-  padding: 0 40px; /* 좌우 여백을 조금 더 줌 */
+  margin: 0 auto;
 
-  /* ✅ 변경: 최대 너비를 1000px -> 1600px로 대폭 증가 */
-  max-width: 1600px;
-  width: 100%; /* 화면이 작을 땐 꽉 차게 */
-  margin: 0 auto; /* 중앙 정렬 */
+  /* 💻 데스크탑 (1024px 이상): 한 줄에 4개씩 꽉 채우기 */
+  grid-template-columns: repeat(4, 1fr);
 
-  /* 🔥 [추가] 초대형 화면(1600px 이상)에서는 4줄로 보여주기 */
-  @media (min-width: 1600px) {
-    grid-template-columns: repeat(4, 1fr);
-  }
-
-  /* 기존 반응형 유지 */
+  /* 📱 태블릿 (화면 줄어들면): 한 줄에 2개 */
   @media (max-width: 1024px) {
     grid-template-columns: repeat(2, 1fr);
   }
+
+  /* 📱 모바일: 한 줄에 1개 */
   @media (max-width: 768px) {
     grid-template-columns: repeat(1, 1fr);
+    padding: 0 20px; /* 모바일에서는 여백 줄임 */
   }
 `;
 
