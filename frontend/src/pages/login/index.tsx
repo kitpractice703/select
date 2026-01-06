@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import api from "../../api/axios";
 import { useNavigate } from "react-router-dom";
 import S from "./style";
 
@@ -12,21 +12,23 @@ const Login = () => {
   };
 
   const handleSubmit = async () => {
-    try {
-      const response = await axios.post(
-        "http://100.49.50.236/api/signin/",
-        formData
-      );
-      localStorage.setItem("username", response.data.username);
-      alert(`${response.data.username}님 환영합니다!`);
-      navigate("/"); 
-    } catch (error: any) {
-      alert(
-        "로그인 실패: " +
-          (error.response?.data?.message || "아이디/비번을 확인하세요")
-      );
-    }
-  };
+  try {
+    // 1. 주소 변경: /signin/ -> /token/
+    const response = await api.post("/token/", formData);
+
+    // 2. 저장 변경: access token을 저장합니다.
+    localStorage.setItem("access_token", response.data.access);
+    localStorage.setItem("refresh_token", response.data.refresh);
+    
+    // 3. 사용자 이름 저장 (편의상)
+    localStorage.setItem("username", formData.username);
+
+    alert("로그인 성공!");
+    navigate("/"); 
+  } catch (error: any) {
+    alert("로그인 실패: 아이디와 비밀번호를 확인하세요.");
+  }
+};
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
