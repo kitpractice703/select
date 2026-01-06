@@ -1,13 +1,19 @@
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes, authentication_classes
+from rest_framework.permissions import AllowAny
 from .serializers import UserSerializer
 from django.contrib.auth import authenticate
-from django.contrib.auth.models import User  # [필수] User 모델 가져오기
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.models import User
 
+# ★ 핵심: 이 3가지 장식이 있어야 로그인 없이도(토큰 없이도) 접속 가능합니다.
+@csrf_exempt
 @api_view(['POST'])
+@permission_classes([AllowAny])
+@authentication_classes([])
 def signup(request):
-    # [추가된 로직] 아이디 중복 체크
+    # 아이디 중복 체크
     username = request.data.get('username')
     if User.objects.filter(username=username).exists():
         return Response(
@@ -15,15 +21,16 @@ def signup(request):
             status=status.HTTP_409_CONFLICT
         )
 
-    # 기존 회원가입 로직
     serializer = UserSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
         return Response({"message": "회원가입 성공!", "user": serializer.data}, status=status.HTTP_201_CREATED)
-    
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+@csrf_exempt
 @api_view(['POST'])
+@permission_classes([AllowAny])
+@authentication_classes([])
 def signin(request):
     username = request.data.get('username')
     password = request.data.get('password')

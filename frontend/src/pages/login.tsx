@@ -1,82 +1,9 @@
 import { useState } from "react";
 import axios from "axios";
-import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
-// 스타일은 Signup과 동일 (나중에는 공통 파일로 빼는 게 좋습니다)
-const Container = styled.div`
-  display: flex;
-  height: 100vh;
-  width: 100vw;
-  font-family: "Noto Sans KR", sans-serif;
-`;
-const ImageSection = styled.div`
-  flex: 1;
-  background: linear-gradient(to right, #a1c4fd, #c2e9fb);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  color: white;
-  h2 {
-    font-family: "Playfair Display";
-    font-size: 3rem;
-    margin-bottom: 20px;
-  }
-  p {
-    font-size: 1.2rem;
-  }
-  @media (max-width: 768px) {
-    display: none;
-  }
-`;
-const FormSection = styled.div`
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #f9f9f9;
-`;
-const FormBox = styled.div`
-  width: 400px;
-  padding: 50px;
-  background: white;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-  text-align: center;
-`;
-const Input = styled.input`
-  width: 100%;
-  padding: 15px;
-  margin-bottom: 15px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  font-size: 14px;
-  box-sizing: border-box;
-`;
-const Button = styled.button`
-  width: 100%;
-  padding: 15px;
-  background-color: #1d1d1d;
-  color: white;
-  border: none;
-  cursor: pointer;
-  font-size: 16px;
-  margin-top: 10px;
-  transition: 0.3s;
-  &:hover {
-    background-color: #333;
-  }
-`;
-const LinkText = styled.p`
-  margin-top: 20px;
-  color: #666;
-  font-size: 14px;
-  cursor: pointer;
-  &:hover {
-    text-decoration: underline;
-    color: #1d1d1d;
-  }
-`;
+// ★ 스타일 꾸러미를 'S'라는 이름으로 가져옴
+import S from "./login.style";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -94,7 +21,7 @@ const Login = () => {
       );
       localStorage.setItem("username", response.data.username);
       alert(`${response.data.username}님 환영합니다!`);
-      navigate("/"); // 로그인 성공 시 메인 화면으로 이동
+      navigate("/"); 
     } catch (error: any) {
       alert(
         "로그인 실패: " +
@@ -103,36 +30,45 @@ const Login = () => {
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleSubmit(); 
+    }
+  };
+
+  // ▼ 여기 태그들 앞에 전부 'S.' 을 붙여주세요!
   return (
-    <Container>
-      <ImageSection>
+    <S.Container>
+      <S.ImageSection>
         <h2>Select.</h2>
         <p>Welcome Back!</p>
-      </ImageSection>
-      <FormSection>
-        <FormBox>
+      </S.ImageSection>
+      <S.FormSection>
+        <S.FormBox>
           <h2 style={{ fontFamily: "Playfair Display", marginBottom: "30px" }}>
             Login
           </h2>
-          <Input
+          <S.Input
             type="text"
             name="username"
             placeholder="아이디"
             onChange={handleChange}
+            onKeyDown={handleKeyDown}
           />
-          <Input
+          <S.Input
             type="password"
             name="password"
             placeholder="비밀번호"
             onChange={handleChange}
+            onKeyDown={handleKeyDown}
           />
-          <Button onClick={handleSubmit}>Sign In</Button>
-          <LinkText onClick={() => navigate("/signup")}>
+          <S.Button onClick={handleSubmit}>Sign In</S.Button>
+          <S.LinkText onClick={() => navigate("/signup")}>
             계정이 없으신가요? 회원가입
-          </LinkText>
-        </FormBox>
-      </FormSection>
-    </Container>
+          </S.LinkText>
+        </S.FormBox>
+      </S.FormSection>
+    </S.Container>
   );
 };
 
