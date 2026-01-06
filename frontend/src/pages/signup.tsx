@@ -128,14 +128,18 @@ const Signup = () => {
 
   const handleSubmit = async () => {
     try {
-      await axios.post("/api/signup/", formData);
-      alert("회원가입 성공! 로그인 페이지로 이동합니다.");
+      await axios.post("http://100.49.50.236/api/signup/", formData);      alert("회원가입 성공! 로그인 페이지로 이동합니다.");
       navigate("/login");
     } catch (error: any) {
       alert("회원가입 실패: " + (error.response?.data?.message || "오류 발생"));
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleSubmit(); // 엔터 누르면 회원가입 실행!
+    }
+  };
   return (
     <Container>
       <ImageSection>
@@ -153,18 +157,21 @@ const Signup = () => {
             name="username"
             placeholder="아이디"
             onChange={handleChange}
+            onKeyDown={handleKeyDown}
           />
           <Input
             type="email"
             name="email"
             placeholder="이메일"
             onChange={handleChange}
+            onKeyDown={handleKeyDown}
           />
           <Input
             type="password"
             name="password"
             placeholder="비밀번호"
             onChange={handleChange}
+            onKeyDown={handleKeyDown}
           />
           <Button onClick={handleSubmit}>Create Account</Button>
           <LinkText onClick={() => navigate("/login")}>
