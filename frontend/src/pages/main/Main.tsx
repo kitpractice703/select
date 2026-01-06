@@ -1,137 +1,7 @@
 import { useState, useEffect } from "react";
-import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import MoodCard, { type MoodData } from "../components/MoodCard"; // 위에서 만든 컴포넌트 임포트
-
-// --- 스타일 ---
-const Container = styled.div`
-  background-color: #f9f9f9;
-  min-height: 100vh;
-  padding-bottom: 50px;
-  font-family: "Noto Sans KR", sans-serif;
-`;
-
-const Navbar = styled.nav`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  /* 핵심: 최대 너비 제한을 없앱니다 */
-  width: 100%;
-  /* 양옆 여백만 조금 줍니다 (딱 붙으면 안 예쁘니까요) */
-  padding: 20px 50px;
-  box-sizing: border-box;
-`;
-
-const Logo = styled.div`
-  font-family: "Sacramento", cursive;
-  font-size: 32px;
-  cursor: pointer;
-`;
-
-const Hero = styled.header`
-  text-align: center;
-  padding: 80px 0;
-  h1 {
-    font-family: "Playfair Display", serif;
-    font-size: 48px;
-    font-weight: 400;
-    margin-bottom: 15px;
-  }
-  p {
-    color: #666;
-    margin-bottom: 40px;
-  }
-`;
-
-const GridContainer = styled.div`
-  display: grid;
-  width: 100%;
-  max-width: none;
-  padding: 0 50px;
-  box-sizing: border-box;
-  gap: 40px;
-  margin: 0 auto;
-
-  /* 🔥 [핵심 수정] 화면이 아무리 커져도 '3개'씩만 배열해서 3개/3개 균형 맞추기 */
-  grid-template-columns: repeat(3, 1fr);
-
-  /* 💻 반응형: 화면이 좁아지면(태블릿) 2개씩 */
-  @media (max-width: 1024px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  /* 📱 반응형: 모바일은 1개씩 */
-  @media (max-width: 768px) {
-    grid-template-columns: repeat(1, 1fr);
-    padding: 0 20px;
-  }
-`;
-
-const LogoutBtn = styled.button`
-  background: none;
-  border: 1px solid #ddd;
-  padding: 5px 15px;
-  cursor: pointer;
-  border-radius: 20px;
-  &:hover {
-    background: #333;
-    color: white;
-  }
-`;
-
-// --- 모달 스타일 ---
-const ModalOverlay = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.7);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-`;
-
-const ModalContent = styled.div`
-  background: white;
-  width: 90%;
-  max-width: 800px;
-  border-radius: 15px;
-  overflow: hidden;
-  display: flex;
-  position: relative;
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-  }
-`;
-
-const ModalImage = styled.div<{ bg: string }>`
-  flex: 1;
-  min-height: 300px;
-  background-image: url(${(props) => props.bg});
-  background-size: cover;
-  background-position: center;
-`;
-
-const ModalText = styled.div`
-  flex: 1;
-  padding: 40px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-`;
-
-const CloseBtn = styled.button`
-  position: absolute;
-  top: 15px;
-  right: 20px;
-  background: none;
-  border: none;
-  font-size: 30px;
-  cursor: pointer;
-`;
+import MoodCard, { type MoodData } from "../../components/MoodCard"; // 위에서 만든 컴포넌트 임포트
+import S from './style';
 
 // --- 메인 컴포넌트 ---
 const Main = () => {
@@ -203,10 +73,10 @@ const Main = () => {
   ];
 
   return (
-    <Container>
-      <Navbar>
+    <S.Container>
+      <S.Navbar>
         <div style={{ width: 50 }}></div>
-        <Logo>Select.</Logo>
+        <S.Logo>Select.</S.Logo>
 
         {/* username이 있으면 로그아웃, 없으면 로그인 버튼 보여주기 */}
         {username ? (
@@ -214,14 +84,14 @@ const Main = () => {
             <span style={{ fontSize: "14px", color: "#666" }}>
               {username}님
             </span>
-            <LogoutBtn onClick={handleLogout}>Logout</LogoutBtn>
+            <S.LogoutBtn onClick={handleLogout}>Logout</S.LogoutBtn>
           </div>
         ) : (
-          <LogoutBtn onClick={() => navigate("/login")}>Login</LogoutBtn>
+          <S.LogoutBtn onClick={() => navigate("/login")}>Login</S.LogoutBtn>
         )}
-      </Navbar>
+      </S.Navbar>
 
-      <Hero>
+      <S.Hero>
         <h1>
           Less choice
           <br />
@@ -238,7 +108,7 @@ const Main = () => {
         >
           find your mood →
         </button>
-      </Hero>
+      </S.Hero>
 
       <div style={{ borderTop: "1px dashed #ccc", margin: "0 0 50px 0" }}></div>
 
@@ -254,7 +124,7 @@ const Main = () => {
         Pick your own Mood
       </h2>
 
-      <GridContainer>
+      <S.GridContainer>
         {moods.map((mood) => (
           <MoodCard
             key={mood.id}
@@ -262,15 +132,15 @@ const Main = () => {
             onClick={() => setSelectedMood(mood)}
           />
         ))}
-      </GridContainer>
+      </S.GridContainer>
 
       {/* 모달창 구현 */}
       {selectedMood && (
-        <ModalOverlay onClick={() => setSelectedMood(null)}>
-          <ModalContent onClick={(e) => e.stopPropagation()}>
-            <ModalImage bg={selectedMood.img} />
-            <ModalText>
-              <CloseBtn onClick={() => setSelectedMood(null)}>&times;</CloseBtn>
+        <S.ModalOverlay onClick={() => setSelectedMood(null)}>
+          <S.ModalContent onClick={(e) => e.stopPropagation()}>
+            <S.ModalImage bg={selectedMood.img} />
+            <S.ModalText>
+              <S.CloseBtn onClick={() => setSelectedMood(null)}>&times;</S.CloseBtn>
               <span
                 style={{
                   fontFamily: "Playfair Display",
@@ -307,11 +177,11 @@ const Main = () => {
               >
                 Select this mood
               </button>
-            </ModalText>
-          </ModalContent>
-        </ModalOverlay>
+            </S.ModalText>
+          </S.ModalContent>
+        </S.ModalOverlay>
       )}
-    </Container>
+    </S.Container>
   );
 };
 
