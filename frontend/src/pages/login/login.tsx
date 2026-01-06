@@ -1,9 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
-// ★ 스타일 꾸러미를 'S'라는 이름으로 가져옴
-import S from "./login.style";
+import S from "./style";
 
 const Login = () => {
   const navigate = useNavigate();
