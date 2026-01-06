@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'rest_framework',   # API용
     'corsheaders',      # React 통신용
     'api',              # 우리가 만든 앱
+    'rest_framework_simplejwt',
 ]
 
 MIDDLEWARE = [
@@ -137,4 +138,10 @@ DATABASES = {
         'HOST': 'localhost',
         'PORT': '3306',
     }
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
 }

@@ -5,14 +5,14 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['username', 'email', 'password']
-        # 비밀번호는 쓸 때만 입력받고, 조회할 때는 안 보이게 설정 (보안)
+        # 비밀번호는 읽을 때(조회할 때) 보이면 안 되므로 write_only 설정
         extra_kwargs = {'password': {'write_only': True}}
 
+    # ★ 여기가 핵심입니다! (이게 없으면 암호화가 안 됩니다)
     def create(self, validated_data):
-        # ★ 핵심: create_user를 써야 비밀번호가 암호화되어 저장됩니다.
         user = User.objects.create_user(
             username=validated_data['username'],
-            email=validated_data.get('email', ''),
+            email=validated_data['email'],
             password=validated_data['password']
         )
         return user
