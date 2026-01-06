@@ -50,7 +50,7 @@ const GridContainer = styled.div`
   margin: 0 auto;
 
   /* 💻 데스크탑 (1024px 이상): 한 줄에 4개씩 꽉 채우기 */
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
 
   /* 📱 태블릿 (화면 줄어들면): 한 줄에 2개 */
   @media (max-width: 1024px) {
